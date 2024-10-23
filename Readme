@@ -1,0 +1,198 @@
+# Personal Expense Tracker API
+
+## Overview
+
+This is a RESTful API built with Node.js and Express.js for managing personal financial records. The API allows users to record income and expenses, retrieve past transactions, and get summaries by category or time period. The database used is SQLite for simplicity, but MongoDB is also supported.
+
+## Features
+
+- Record income and expenses
+- Retrieve past transactions
+- Update or delete transactions
+- Get summaries by category or time period
+- Optional user authentication for route protection
+- Bonus features: pagination and report generation
+
+## Technologies
+
+- **Backend Framework**: Node.js with Express.js
+- **Database**: SQLite or MongoDB (optional)
+- **Authentication**: JSON Web Tokens (JWT) (Bonus)
+- **Pagination**: Supported on transactions retrieval (Bonus)
+
+## Database Setup
+
+### If using SQLite:
+Two tables are used: 
+- **transactions**:
+    - `id`: INTEGER, Primary Key, Auto-increment
+    - `type`: TEXT, 'income' or 'expense'
+    - `category`: TEXT
+    - `amount`: REAL
+    - `date`: TEXT (ISO 8601 format)
+    - `description`: TEXT
+- **categories**:
+    - `id`: INTEGER, Primary Key, Auto-increment
+    - `name`: TEXT
+    - `type`: TEXT, 'income' or 'expense'
+
+### If using MongoDB:
+Two collections are used:
+- **transactions**:
+    - `type`: String, 'income' or 'expense'
+    - `category`: String
+    - `amount`: Number
+    - `date`: ISO Date format
+    - `description`: String
+- **categories**:
+    - `name`: String
+    - `type`: String, 'income' or 'expense'
+
+## API Endpoints
+
+### 1. Add a new transaction
+- **Endpoint**: `POST /transactions`
+- **Request Body**:
+    ```json
+    {
+        "type": "income",
+        "category": "Salary",
+        "amount": 5000,
+        "date": "2024-10-22",
+        "description": "October Salary"
+    }
+    ```
+- **Response**:
+    ```json
+    {
+        "id": 1,
+        "type": "income",
+        "category": "Salary",
+        "amount": 5000,
+        "date": "2024-10-22",
+        "description": "October Salary"
+    }
+    ```
+
+### 2. Retrieve all transactions
+- **Endpoint**: `GET /transactions`
+- **Query Params** (Optional): 
+    - `page`: Pagination page number
+    - `limit`: Number of transactions per page
+- **Response**:
+    ```json
+    [
+        {
+            "id": 1,
+            "type": "income",
+            "category": "Salary",
+            "amount": 5000,
+            "date": "2024-10-22",
+            "description": "October Salary"
+        },
+        ...
+    ]
+    ```
+
+### 3. Retrieve a transaction by ID
+- **Endpoint**: `GET /transactions/:id`
+- **Response**:
+    ```json
+    {
+        "id": 1,
+        "type": "income",
+        "category": "Salary",
+        "amount": 5000,
+        "date": "2024-10-22",
+        "description": "October Salary"
+    }
+    ```
+
+### 4. Update a transaction by ID
+- **Endpoint**: `PUT /transactions/:id`
+- **Request Body**:
+    ```json
+    {
+        "category": "Freelance",
+        "amount": 3000
+    }
+    ```
+- **Response**:
+    ```json
+    {
+        "id": 1,
+        "type": "income",
+        "category": "Freelance",
+        "amount": 3000,
+        "date": "2024-10-22",
+        "description": "October Freelance Work"
+    }
+    ```
+
+### 5. Delete a transaction by ID
+- **Endpoint**: `DELETE /transactions/:id`
+- **Response**:
+    ```json
+    {
+        "message": "Transaction deleted successfully"
+    }
+    ```
+
+### 6. Get summary of transactions
+- **Endpoint**: `GET /summary`
+- **Query Params** (Optional):
+    - `from`: Start date (YYYY-MM-DD)
+    - `to`: End date (YYYY-MM-DD)
+    - `category`: Filter by category
+- **Response**:
+    ```json
+    {
+        "totalIncome": 8000,
+        "totalExpense": 2000,
+        "balance": 6000
+    }
+    ```
+
+## Optional Features
+
+### 7. User Authentication
+- Implement JWT-based authentication to protect routes and associate transactions with specific users.
+
+### 8. Pagination for Transactions
+- **Endpoint**: `GET /transactions`
+- Query params: `page` (page number) and `limit` (number of items per page)
+
+### 9. Generate Monthly Reports
+- **Endpoint**: `GET /reports/monthly`
+- **Response**:
+    ```json
+    {
+        "category": "Groceries",
+        "totalSpent": 500
+    }
+    ```
+
+## Error Handling
+
+- Invalid transaction ID or input will return a `400 Bad Request` with a descriptive error message.
+
+## Setup Instructions
+
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/DineshRamaraj/Node_Personal_Expense_Application.git
+    ```
+2. Install dependencies:
+    ```bash
+    cd expense-tracker-api
+    npm install
+    ```
+3. Set up environment variables in a `.env` file:
+    ```
+    PORT=5000
+    MONGODB_URL=<your_database_url>
+    ```
+4. Run the application:
+    ```bash
+    npm start
+    ```

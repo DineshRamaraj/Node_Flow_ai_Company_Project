@@ -1,0 +1,447 @@
+openapi: "3.0.0"
+info:
+  title: Personal Expenses Calculation
+  description: This is documentation for Personal Expenses Calculation
+  termsOfService: http://example.com/terms
+  contact:
+    name: API Support
+    url: http://example.com/terms
+    email: support@example.com
+  license:
+    name: Example license
+    url: http://example.com/license.html
+  version: 1.0
+servers:
+  -url: "http://localhost:5000/docs"
+  description: "This is my Sample Server"
+schemes: [http, https]
+tags:
+  - name: Personal Expenses
+    description: Demo Project
+  # - name: Module2
+  #   description: crud Project
+
+paths:
+  /api/transactions:
+    get:
+      tags: 
+        - Get All Transactions
+      summary: Retrieves a list of Transactions
+      description: This API sends an array of objects containing transaction_type, category, amount, date, description.
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction_list:
+                    type: array
+                    items:
+                      type: object
+                      properties: 
+                        _id: 
+                          type: string
+                        transaction_type:
+                          type: string
+                        category: 
+                          type: string
+                        amount: 
+                          type: number
+                        date:
+                          type: string
+                          format: date-time
+                        description: 
+                          type: string
+                        createdAt: 
+                          type: string
+                          format: date-time
+                        updatedAt: 
+                          type: string
+                          format: date-time
+                        __v: 
+                          type: integer
+                  total_transactions: 
+                    type: integer
+                    example: 2
+                  total_pages: 
+                    type: integer
+                    example: 1
+                  current_page:
+                    type: integer
+                    example: 1
+                  isAction:
+                    type: boolean
+                    example: true
+              example:
+                transaction_list:
+                  - _id: 6717b12a8937512907df3da3
+                    transaction_type: expense
+                    category: shoes
+                    amount: 300
+                    date: "2024-10-21T18:30:00.000Z"
+                    description: I Bought a Shoe
+                    createdAt: "2024-10-22T14:05:30.736Z"
+                    updatedAt: "2024-10-23T02:51:09.853Z"
+                  - _id: 6718711d48dc1425eb452787
+                    transaction_type: income
+                    category: salary
+                    amount: 10000
+                    date: "2024-10-23T18:30:00.000Z"
+                    description: Received salary
+                    createdAt: "2024-10-23T02:51:09.853Z"
+                    updatedAt: "2024-10-23T02:51:09.853Z"
+                total_transactions: 2
+                total_pages: 1
+                current_page: 1
+                isAction: true
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_msg:
+                    type: string
+                  isAction:
+                    type: boolean
+              example:
+                error_msg: "Internal Server Error"
+                isAction: false
+
+    post:
+      tags:
+        - Create a Transaction
+      summary: To create a new Transaction
+      description: creates a new Transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transaction_type:
+                  type: string
+                category: 
+                  type: string
+                amount: 
+                  type: number
+                date:
+                  type: string
+                  format: date
+                description: 
+                  type: string
+      responses:
+        "201":
+          description: Transaction Created Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: string
+                  isAction: boolean
+              example:
+                msg: "Insert Transaction Successfully..."
+                isAction: true
+
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_msg:
+                    type: string
+                  isAction:
+                    type: boolean
+              example:
+                error_msg: "Internal Server Error"
+                isAction: false
+
+  
+  /api/transactions/{id}:
+    get:
+      tags: 
+        - Get Single Transactions
+      summary: Retrieves a Single Transaction
+      description: This API sends an array of objects containing transaction_type, category, amount, date, description.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the post to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        "404":
+          description: Transaction ID Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: string
+                  isAction: boolean
+              example:
+                msg: "Transaction ID Not Found"
+                isAction: true
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction_list:
+                    type: array
+                    items:
+                      type: object
+                      properties: 
+                        _id: 
+                          type: string
+                        transaction_type:
+                          type: string
+                        category: 
+                          type: string
+                        amount: 
+                          type: number
+                        date:
+                          type: string
+                          format: date-time
+                        description: 
+                          type: string
+                        createdAt: 
+                          type: string
+                          format: date-time
+                        updatedAt: 
+                          type: string
+                          format: date-time
+                        __v: 
+                          type: integer
+                  
+                  isAction:
+                    type: boolean
+                    example: true
+              example:
+                transaction_list:
+                  - _id: 6717b12a8937512907df3da3
+                    transaction_type: expense
+                    category: shoes
+                    amount: 300
+                    date: "2024-10-21T18:30:00.000Z"
+                    description: I Bought a Shoe
+                    createdAt: "2024-10-22T14:05:30.736Z"
+                    updatedAt: "2024-10-23T02:51:09.853Z"
+                isAction: true
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_msg:
+                    type: string
+                  isAction:
+                    type: boolean
+              example:
+                error_msg: "Internal Server Error"
+                isAction: false
+    
+                
+    put:
+      tags:
+        - Update the Transaction
+      summary: Update the existing post
+      description: to update the existing transaction by its ID
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the transaction to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transaction_type:
+                  type: string
+                category: 
+                  type: string
+                amount: 
+                  type: number
+                date:
+                  type: string
+                  format: [date-time, date]
+                description: 
+                  type: string
+      responses:
+        "404":
+          description: Transaction ID Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: string
+                  isAction: boolean
+              example:
+                msg: "Transaction ID Not Found"
+                isAction: true
+
+        "201":
+          description: Transaction Updated Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: string
+                  isAction: boolean
+              example:
+                msg: "Updated Successfully..."
+                isAction: true
+
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_msg:
+                    type: string
+                  isAction:
+                    type: boolean
+              example:
+                error_msg: "Internal Server Error"
+                isAction: false
+
+    
+    delete:
+      tags:
+        - Delete Transaction
+      summary: Delete the existing post
+      description: delete the existing transaction by its ID
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the transaction to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transaction_type:
+                  type: string
+                category: 
+                  type: string
+                amount: 
+                  type: number
+                date:
+                  type: string
+                  format: [date-time, date]
+                description: 
+                  type: string
+      responses:
+        "404":
+          description: Transaction ID Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: string
+                  isAction: boolean
+              example:
+                msg: "Transaction ID Not Found"
+                isAction: true
+
+        "201":
+          description: Transaction Deleted Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg: string
+                  isAction: boolean
+              example:
+                msg: "Deleted Successfully..."
+                isAction: true
+
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_msg:
+                    type: string
+                  isAction:
+                    type: boolean
+              example:
+                error_msg: "Internal Server Error"
+                isAction: false
+  
+  /api/summary/:
+    get:
+      tags: 
+        - Get All Summary Transactions
+      summary: Retrieves a list of Transactions
+      description: This API sends an array of objects containing transaction_type, category, amount, date, description.
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction_details:
+                    type: object
+                    properties: 
+                      total_income:
+                        type: string
+                      total_expenses: 
+                        type: string
+                      balance:
+                        type: string
+                  isAction:
+                    type: boolean
+                    example: true
+              example:
+                transaction_details:
+                  total_income: 40000
+                  total_expenses: 4100
+                  balance: 35900
+                isAction: true
+        "500":
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_msg:
+                    type: string
+                  isAction:
+                    type: boolean
+              example:
+                error_msg: "Internal Server Error"
+                isAction: false

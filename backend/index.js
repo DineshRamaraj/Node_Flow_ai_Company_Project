@@ -3,7 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const ConnectionDB = require("./Config/database");
-const router = require("./routes/transactionroute");
+const router = require("./routes/transactionRoute");
 const swaggerUi = require("swagger-ui-express");
 const Yaml = require("yamljs");
 dotenv.config();
